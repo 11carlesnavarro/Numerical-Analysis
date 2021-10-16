@@ -43,6 +43,6 @@ def newton(f, df, p0, tol, N0):
     n_iters = i + 1
     
     if convergence:        
-        return (p, data, convergence) 
+        return (phat, data, convergence) 
     
     return ("El método fracasó después de {} iteraciones".format(N0) , data, convergence)
