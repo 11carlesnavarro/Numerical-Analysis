@@ -6,6 +6,8 @@ def crout(n, A):
     L = np.zeros(shape=(n,n))
     U = np.zeros(shape=(n,n))
     
+    num_prod = 0
+    
     # Asign U diagonal to ones
     u = np.ones(n)
     for idx, ui in enumerate(u):
@@ -20,7 +22,7 @@ def crout(n, A):
     for j in range(1, n):
         U[0][j] = np.divide(A[0][j], L[0][0])
         L[j][0] = np.divide(A[j][0], U[0][0])
-    
+        num_prod += 2
     # Fill the other rows and colums
     for i in range(1, n-1):
         
@@ -28,6 +30,7 @@ def crout(n, A):
         z = 0
         for k in range(i):
             z += L[i][k] * U[k][i]
+            num_prod += 1
         
         L[i][i] = A[i][i] - z
         
@@ -40,20 +43,26 @@ def crout(n, A):
             z = 0
             for k in range(i):
                 z += L[i][k] * U[k][j]
+                num_prod += 1
             U[i][j] = (A[i][j] - z) / L[i][i]
+            num_prod += 1
             
             # ith column of L
             z = 0
             for k in range(i):
                 z += L[j][k] * U[k][i]
+                num_prod += 1
             L[j][i] = (A[j][i] - z) / U[i][i]
+            num_prod += 1
     
     # (n,n) value of L
     z = 0
     for k in range(n):
         z += L[n-1][k] * U[k][n-1]
+        num_prod += 1
     L[n-1][n-1] = A[n-1][n-1] - z
     
+    print(num_prod)
     return np.asarray(L), np.asarray(U)
 
 def crout_tridiagonal(n, A):
